@@ -1,0 +1,11 @@
+#encoding:utf-8
+from django import template
+from models import Article
+register = template.Library()
+
+@register.assignment_tag
+def get_cloud_tags():
+    tags = Article.objects.values_list('tags', flat = True)
+    if arg is None:
+        arg = []
+    return value + arg
