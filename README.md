@@ -1,14 +1,12 @@
-vmaig.com 网站源码
-=================
-#有问题欢迎加qq群
-vmaig qq群: 458788510  
-我的qq: 994171686  
-
+本站基于开源项目vmaig_blog，感谢billvsme得无私贡献。
+我的qq: 617840741，欢迎交流，互相学习。
 
 #更新日志
-2015/5/15 从django1.6 升级到 django1.8 (还保留django1.6分支)  
-2015/6/21 添加[xadmin分支](https://github.com/billvsme/vmaig_blog/tree/xadmin),xadmin分支中使用xadmin作为后台管理(使用 django 1.8),如果你想后台比较漂亮可以切换到xadmin分支(注意你不需要pip install django-xadmin 但是需要安装django-crispy-forms跟django-reversion详细步骤见xadmin分支中的README)  
-2015/7/5 对xadmin分支中的错误进行了比较大的修改  
+2016/3/20 添加登陆、注册、密码重置表单得验证码支持（使用django-simple-captcha）
+2016/3/20 支持clouds_tag从文章tag中自动生成
+2016/3/20 合并了注册、登陆等重复表单
+2016/3/20 添加local_settings.py，并加入gitignore，通过settings.py加载完成本地配置
+
 
 #概述
 vmaig\_blog 是一个基于  **Django1.8**  跟  **Bootstrap3**  开发的 **博客系统** ，实现了一个博客完整的功能。http://vmaig.com 就是基于vmaig\_blog 搭建的。
@@ -25,6 +23,7 @@ vmaig\_blog 是一个基于  **Django1.8**  跟  **Bootstrap3**  开发的 **博
 
 #Demo
 http://vmaig.com   
+http://vallr.com   
 
 #预览
 ![首页](http://vmaig.qiniudn.com/screenshot/vmaig_01.jpg)
@@ -50,6 +49,10 @@ http://vmaig.com
 安装Pillow （因为处理头像要用到PIL库）:
 
     pip install Pillow
+
+安装验证码模块django-simple-captcha:
+
+    pip install django-simple-captcha
 
 
 如果想使用七牛云替代本地存储头像，安装qiniu :
@@ -99,7 +102,7 @@ EMAIL\_HOST\_PASSWORD(你的邮箱密码)，
     
 运行 :
     
-    python manage.py runserver
+    python manage.py runserver 0.0.0.0:8000
     
 #接下来该干什么？
 在浏览器中输入 http://127.0.0.1:8000/admin  
@@ -111,7 +114,3 @@ EMAIL\_HOST\_PASSWORD(你的邮箱密码)，
 通过“资讯” 添加转载的新闻  
 通过“分类” “文章” 添加分类跟文章  
 通过“用户” 对用户进行操作  
-
-**特别注意**
-首页的便签云中的内容，在后台不能修改。
-请修改  blog/templates/blog/widgets/tags_cloud.html 中的 tags数组的内容。
