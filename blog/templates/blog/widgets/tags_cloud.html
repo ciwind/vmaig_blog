@@ -1,3 +1,4 @@
+{% load blog_tags %}
 <div id="tags_cloud" class="">
 </div>
 
@@ -15,7 +16,11 @@
     var fill = d3.scale.category20();
 
     //在tags数组中存放blog的tags,用于在标签云中显示
-    var tags = [ "反汇编","OllyDbg","PE","ASM","Django","Python","Java","Bootstrap","Gentoo","linux","Shell","加密与解密","逆向","爬虫",];
+    {% get_cloud_tags as cloud_tags %} 
+    var tags = {{ cloud_tags|safe }};
+    
+    // var tags = [ "反汇编","OllyDbg","PE","ASM","Django","Python","Java","Bootstrap","Gentoo","linux","Shell","加密与解密","逆向","爬虫",];
+
 
     var words = tags.concat(tags).concat(tags);
       

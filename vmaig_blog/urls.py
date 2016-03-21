@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'',include('blog.urls')),
     url(r'',include('vmaig_comments.urls')),
     url(r'',include('vmaig_auth.urls')),
+    url(r'^captcha/',include('captcha.urls')),
 ]

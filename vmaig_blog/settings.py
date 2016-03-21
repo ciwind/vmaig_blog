@@ -20,7 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'p1p2e^77+6ex*1@-s6hzcx7l3bx#g2q0w1za1c-x-1p@n6z^x*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -38,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'captcha',
     'blog',
     'vmaig_auth',
     'vmaig_comments',
@@ -203,7 +202,7 @@ EMAIL_HOST = ''                       #SMTP地址 例如: smtp.163.com
 EMAIL_PORT = 25                       #SMTP端口 例如: 25
 EMAIL_HOST_USER = ''                  #我自己的邮箱 例如: xxxxxx@163.com
 EMAIL_HOST_PASSWORD = ''              #我的邮箱密码 例如  xxxxxxxxx
-EMAIL_SUBJECT_PREFIX = u'vmaig'       #为邮件Subject-line前缀,默认是'[django]'
+EMAIL_SUBJECT_PREFIX = u''       #为邮件Subject-line前缀,默认是'[django]'
 EMAIL_USE_TLS = True                  #与SMTP服务器通信时，是否启动TLS链接(安全链接)。默认是false
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -213,3 +212,8 @@ qiniu_access_key = ''
 qiniu_secret_key = ''
 qiniu_bucket_name = ''
 
+#本地配置
+try:
+    from local_settings import *
+except Exception, ex:
+    print str(ex)

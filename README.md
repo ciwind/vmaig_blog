@@ -1,4 +1,5 @@
 本站基于开源项目vmaig_blog，感谢billvsme得无私贡献。
+
 我的qq: 617840741，欢迎交流，互相学习。
 
 #更新日志
@@ -65,7 +66,7 @@ http://vallr.com
 
 下载代码,切换目录：
     
-    git clone https://github.com/billvsme/vmaig_blog
+    git clone https://github.com/ciwind/vmaig_blog
     cd vmaig_bolg
 
 配置setting.py :

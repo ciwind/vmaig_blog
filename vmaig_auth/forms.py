@@ -6,12 +6,20 @@ from django.contrib.sites.models import get_current_site
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
+from captcha.fields import CaptchaField
 import base64
 import logging
 
 logger = logging.getLogger(__name__)
 
-
+class CaptchaForm(forms.Form):
+    captcha = CaptchaField(
+        label='验证码',
+        output_format = u'%(hidden_field)s %(text_field)s %(image)s',
+        error_messages={
+            'required':'请输入验证码',
+            'invalid': '请输入正确的验证码'}
+        )
 
 #参考自django.contrib.auth.forms.UserCreationForm
 
@@ -40,6 +48,14 @@ class VmaigUserCreationForm(forms.ModelForm):
         error_messages={
             'required': u"确认密码未填"
             })
+
+    captcha = CaptchaField(
+        label='验证码',
+        output_format = u'%(hidden_field)s %(text_field)s %(image)s',
+        error_messages={
+            'required':'请输入验证码',
+            'invalid': '请输入正确的验证码'}
+        )
 
     class Meta:
         model = VmaigUser
@@ -77,8 +93,6 @@ class VmaigUserCreationForm(forms.ModelForm):
         raise forms.ValidationError(
             self.error_messages["duplicate_email"]
         )
-       
-        
 
     def save(self, commit=True):
         user = super(VmaigUserCreationForm, self).save(commit=False)
@@ -88,7 +102,7 @@ class VmaigUserCreationForm(forms.ModelForm):
         return user
 
 
-class  VmaigPasswordRestForm(forms.Form):
+class  VmaigPasswordResetForm(forms.Form):
 
     #错误信息
     error_messages = {
@@ -105,6 +119,14 @@ class  VmaigPasswordRestForm(forms.Form):
         error_messages={
         'invalid':  u"email格式错误",
         'required': u'email未填'})
+
+    captcha = CaptchaField(
+        label='验证码',
+        output_format = u'%(hidden_field)s %(text_field)s %(image)s',
+        error_messages={
+            'required':'请输入验证码',
+            'invalid': '请输入正确的验证码'}
+        )
 
     def clean(self):
         username = self.cleaned_data.get('username')

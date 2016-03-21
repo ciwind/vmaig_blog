@@ -9,7 +9,9 @@ from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import get_current_site
 from django.utils.http import base36_to_int, is_safe_url, urlsafe_base64_decode, urlsafe_base64_encode
-from vmaig_auth.forms import VmaigUserCreationForm,VmaigPasswordRestForm
+from vmaig_auth.forms import VmaigUserCreationForm
+from vmaig_auth.forms import VmaigPasswordResetForm
+from vmaig_auth.forms import CaptchaForm
 from vmaig_auth.models import VmaigUser
 import datetime,time
 from PIL import Image
@@ -33,7 +35,7 @@ class UserControl(View):
             return self.login(request)
         elif slug == "logout":
             return self.logout(request)
-        elif slug == "register":
+        elif slug == "register": 
             return self.register(request)
         elif slug == "changepassword":
             return self.changepassword(request)
@@ -53,16 +55,21 @@ class UserControl(View):
 
 
     def login(self,request):
-        username = request.POST.get("username","")
-        password = request.POST.get("password","")
-        user = auth.authenticate(username=username,password=password)
-            
+
+        form = CaptchaForm(request.POST)
         errors = []
-        
-        if user is not None:
-            auth.login(request, user)
+        if not form.is_valid():
+            for k,v in  form.errors.items():
+                errors.append(v.as_text())
         else:
-            errors.append("密码或者用户名不正确")
+            username = request.POST.get("username","")
+            password = request.POST.get("password","")
+            user = auth.authenticate(username=username,password=password)
+            
+            if user is not None:
+                auth.login(request, user)
+            else:
+                errors.append("密码或者用户名不正确")
             
         mydict = {"errors":errors}
         return HttpResponse(json.dumps(mydict),content_type="application/json")
@@ -101,8 +108,11 @@ class UserControl(View):
             try:
                 send_mail(title, message, from_email, [email])
             except Exception as e:
+                import traceback
+                logger.error(traceback.format_exc())
                 logger.error(u'[UserControl]用户注册邮件发送失败:[%s]/[%s]' % (username,email))
-                return HttpResponse(u"发送邮件错误!\n注册失败",status=500)
+                return HttpResponse(json.dumps({"msg": u"发送邮件错误!\n注册失败"}),content_type="application/json")
+                #return HttpResponse(u"发送邮件错误!\n注册失败",status=500) 
 
             new_user = form.save()
             user = auth.authenticate(username=username, password=password2)
@@ -115,7 +125,6 @@ class UserControl(View):
                 #v.as_text() 详见django.forms.util.ErrorList 中
                 errors.append(v.as_text())
 
-            
         mydict = {"errors":errors}
         return HttpResponse(json.dumps(mydict),content_type="application/json")
 
@@ -146,7 +155,7 @@ class UserControl(View):
         username = self.request.POST.get("username","")
         email = self.request.POST.get("email","")
 
-        form = VmaigPasswordRestForm(request.POST)
+        form = VmaigPasswordResetForm(request.POST)
 
         errors = []
 
