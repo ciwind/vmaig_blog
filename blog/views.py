@@ -14,8 +14,6 @@ from django.contrib.auth.tokens import default_token_generator
 from blog.models import Article,Category,Carousel,Column,Nav,News
 from vmaig_comments.models import Comment
 from vmaig_auth.models import VmaigUser
-from vmaig_auth.forms import VmaigUserCreationForm
-from vmaig_auth.forms import VmaigPasswordResetForm
 from vmaig_blog.settings import PAGE_NUM
 import datetime,time
 import json

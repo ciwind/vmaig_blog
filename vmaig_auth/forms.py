@@ -49,14 +49,6 @@ class VmaigUserCreationForm(forms.ModelForm):
             'required': u"确认密码未填"
             })
 
-    captcha = CaptchaField(
-        label='验证码',
-        output_format = u'%(hidden_field)s %(text_field)s %(image)s',
-        error_messages={
-            'required':'请输入验证码',
-            'invalid': '请输入正确的验证码'}
-        )
-
     class Meta:
         model = VmaigUser
         fields = ("username","email")
@@ -100,6 +92,16 @@ class VmaigUserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class CaptchaUserCreationForm(VmaigUserCreationForm):
+    captcha = CaptchaField(
+        label='验证码',
+        output_format = u'%(hidden_field)s %(text_field)s %(image)s',
+        error_messages={
+            'required':'请输入验证码',
+            'invalid': '请输入正确的验证码'}
+        )
 
 
 class  VmaigPasswordResetForm(forms.Form):

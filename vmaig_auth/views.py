@@ -9,7 +9,7 @@ from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import get_current_site
 from django.utils.http import base36_to_int, is_safe_url, urlsafe_base64_decode, urlsafe_base64_encode
-from vmaig_auth.forms import VmaigUserCreationForm
+from vmaig_auth.forms import CaptchaUserCreationForm
 from vmaig_auth.forms import VmaigPasswordResetForm
 from vmaig_auth.forms import CaptchaForm
 from vmaig_auth.models import VmaigUser
@@ -90,7 +90,7 @@ class UserControl(View):
         password2 = self.request.POST.get("password2","")
         email = self.request.POST.get("email","")
 
-        form = VmaigUserCreationForm(request.POST)
+        form = CaptchaUserCreationForm(request.POST)
             
         errors = []
         #验证表单是否正确
