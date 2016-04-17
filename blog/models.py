@@ -1,4 +1,7 @@
 #coding:utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 from django.db import models
 from django.conf import settings
 
