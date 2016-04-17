@@ -1,7 +1,4 @@
 #coding:utf-8
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
 from django.db import models
 from django.conf import settings
 
@@ -56,7 +53,7 @@ class Category(models.Model):
     name = models.CharField(max_length=40,verbose_name=u'名称')
     parent = models.ForeignKey('self',default=None,blank=True,null=True,verbose_name=u'上级分类')
     rank = models.IntegerField(default=0,verbose_name=u'排序')
-    status = models.IntegerField(default=0,choices=STATUS.items(),verbose_name='状态')
+    status = models.IntegerField(default=0,choices=STATUS.items(),verbose_name=u'状态')
 
     create_time = models.DateTimeField(u'创建时间',auto_now_add=True)
 
@@ -68,9 +65,9 @@ class Category(models.Model):
     
     def __unicode__(self):
         if self.parent:
-            return '%s-->%s' % (self.parent,self.name)
+            return u'%s-->%s' % (self.parent,self.name)
         else:
-            return '%s' % (self.name)
+            return u'%s' % (self.name)
 
 
 class Article(models.Model):
